@@ -1,0 +1,13 @@
+<table class="table">
+    <tr>
+        <td><h3>All Users</h3></td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="user in users">
+        <td>{{user.email}}</td>
+        <td>{{user.firstName}} {{user.lastName}}</td>
+        <td>
+            <a class="btn btn-primary" ui-sref="viewUser({id: user._id})">View</a>
+        </td>
+    </tr>
+</table>

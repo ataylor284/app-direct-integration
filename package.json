@@ -1,0 +1,19 @@
+{
+    "name": "foo",
+    "version": "0.0.1",
+    "main": "server.js",
+    "dependencies": {
+        "async": "*",
+        "node-env-file": "*",
+        "fs": "*",
+        "express": "*",
+        "object-to-xml": "*",
+        "request": "*",
+        "oauth-sign": "*",
+        "xml2js": "*",
+        "mongodb": "*"
+    },
+    "scripts": {
+        "start": "nodejs server.js"
+    }
+}
