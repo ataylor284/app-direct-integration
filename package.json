@@ -1,11 +1,14 @@
 {
-    "name": "foo",
+    "name": "appDirectIntegration",
+    "description": "A simple application that integrations with appDirect.",
     "version": "0.0.1",
     "main": "server.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ataylor284/appDirectIntegration.git"
+    },
     "dependencies": {
-        "async": "*",
         "node-env-file": "*",
-        "fs": "*",
         "express": "*",
         "object-to-xml": "*",
         "request": "*",
