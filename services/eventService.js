@@ -1,5 +1,8 @@
 'use strict';
 
+var request = require('request');
+var xml2js = require('xml2js');
+
 module.exports = function(services) { return {
 
     retrieveEvent: function(url, callback) {

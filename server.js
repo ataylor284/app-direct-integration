@@ -5,21 +5,12 @@ var express = require('express');
 var fs = require('fs');
 var request = require('request');
 var xml2js = require('xml2js');
-var MongoClient = require('mongodb').MongoClient;
 
 // load configuration from environment
 env(__dirname + '/.env', {verbose: true, raise: false});
 
-// services to inject
 var services = {};
-MongoClient.connect('mongodb://localhost:27017/test', function(err, db) {
-    if (err) {
-        console.log("mongo error: " + err);
-    } else {
-        console.log("connected to mongo");
-        services.db = db;
-    }
-})
+
 // load services
 fs.readdirSync(__dirname + '/services').forEach(function(filename) {
     if (filename.indexOf('.js', filename.length - 3) == -1) {
@@ -51,7 +42,7 @@ fs.readdirSync(__dirname + '/controllers').forEach(function(filename) {
     }
 });
 
-var server = app.listen(8080, function () {
+var server = app.listen(process.env.PORT || 8080, function () {
     var host = server.address().address
     var port = server.address().port
     console.log("app listening at http://%s:%s", host, port)

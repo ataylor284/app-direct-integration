@@ -1,8 +1,6 @@
 'use strict';
 
 var o2x = require('object-to-xml');
-var request = require('request');
-var xml2js = require('xml2js');
 var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function(services) { return {
