@@ -20,7 +20,15 @@ MongoClient.connect('mongodb://localhost:27017/test', function(err, db) {
         services.db = db;
     }
 })
-//services.userService = require('./services/userService')(services);
+// load services
+fs.readdirSync(__dirname + '/services').forEach(function(filename) {
+    if (filename.indexOf('.js', filename.length - 3) == -1) {
+        return;
+    }
+    var name = filename.substring(0, filename.length - 3);
+    console.log('loading service ' + name);
+    services[name] = require('./services/' + name)(services);
+});
 
 var app = express();
 app.use(express.static('static'));

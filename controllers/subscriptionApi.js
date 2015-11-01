@@ -8,9 +8,10 @@ var ObjectId = require('mongodb').ObjectID;
 module.exports = function(services) { return {
 
     create: function(req, res) {
-        getEventDetails(req.query.url, function (err, eventdetails) {
+        services.eventService.retrieveEvent(req.query.url, function (err, eventdetails) {
             if (err) {
                 console.log(err);
+                res.status(500).send("error retrieving event: " + err);
             } else {
                 eventdetails.event.creator.plan = eventdetails.event.payload.order.editionCode;
                 services.db.collection('users').save(eventdetails.event.creator, function(err, records) {
@@ -26,9 +27,10 @@ module.exports = function(services) { return {
     },
 
     cancel: function(req, res) {
-        getEventDetails(req.query.url, function (err, eventdetails) {
+        services.eventService.retrieveEvent(req.query.url, function (err, eventdetails) {
             if (err) {
                 console.log(err);
+                res.status(500).send("error retrieving event: " + err);
             } else {
                 services.db.collection('users').findOne({_id: ObjectId(eventdetails.event.payload.account.accountIdentifier)}, function(err, user) {
                     if (err) {
@@ -44,7 +46,7 @@ module.exports = function(services) { return {
     },
 
     change: function(req, res) {
-        getEventDetails(req.query.url, function (err, eventdetails) {
+        services.eventService.retrieveEvent(req.query.url, function (err, eventdetails) {
             if (err) {
                 console.log(err);
             } else {
@@ -69,24 +71,11 @@ module.exports = function(services) { return {
     },
 
     status: function(req, res) {
-        getEventDetails(req.query.url, function (err, eventdetails) {
+        services.eventService.retrieveEvent(req.query.url, function (err, eventdetails) {
             console.log("eventdetails = %j", eventdetails);
             respond(res, 'true', null, '', null);
         });
     }};
-}
-
-function getEventDetails(url, callback) {
-    var oauth = { consumer_key: process.env.APPDIRECT_CONSUMER_KEY, consumer_secret: process.env.APPDIRECT_CONSUMER_SECRET };
-    request({url: url, oauth: oauth}, function(error, result, body) {
-        if (error) {
-            callback(error, null);
-        } else {
-            xml2js.parseString(body, {attrkey: '@', explicitArray: false}, function (err, eventdetails) {
-                callback(err, eventdetails);
-            });
-        }
-    });
 }
 
 function respond(res, success, accountIdentifier, message, errorCode) {
