@@ -21,7 +21,7 @@
         "nodeunit": "0.9.1"
     },
     "scripts": {
-        "start": "nodejs server.js",
-        "test": "nodejs tests/runTests.js"
+        "start": "node server.js",
+        "test": "node tests/runTests.js"
     }
 }
