@@ -8,7 +8,7 @@ module.exports = function(services) { return {
 
     allowRequest: function(req) {
         var controller = req.params && req.params[0].split('/')[0];
-        if (controller == 'auth') {
+        if (controller == 'auth' || controller == 'subscriptionApi') {
             return true;
         } else {
             return req.session.authenticated;
