@@ -8,6 +8,7 @@
         <td>{{user.firstName}} {{user.lastName}}</td>
         <td>
             <a class="btn btn-primary" ui-sref="viewUser({id: user._id})">View</a>
+            <a class="btn btn-danger" ng-click="deleteUser(user)">Delete</a>
         </td>
     </tr>
 </table>

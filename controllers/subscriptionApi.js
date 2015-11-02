@@ -12,6 +12,7 @@ module.exports = function(services) { return {
                 res.status(500).send("error retrieving event: " + err);
             } else {
                 eventdetails.event.creator.plan = eventdetails.event.payload.order.editionCode;
+                eventdetails.event.creator.company = eventdetails.event.payload.company;
                 services.db.collection('users').save(eventdetails.event.creator, function(err, records) {
                     if (err) {
                         console.log(err);

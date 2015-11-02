@@ -2,6 +2,7 @@
 
 var env = require('node-env-file');
 var express = require('express');
+var session = require('express-session');
 var fs = require('fs');
 var request = require('request');
 var xml2js = require('xml2js');
@@ -22,6 +23,14 @@ fs.readdirSync(__dirname + '/services').forEach(function(filename) {
 });
 
 var app = express();
+app.use(session({ secret: process.env.SESSION_SECRET, cookie: { maxAge: 60000 }}))
+app.all('/*', function(req, res, next) {
+    if (services.authService.allowRequest(req)) {
+      next();
+  } else {
+      res.status(400).send("authenticate with appdirect to log in");
+  }
+})
 app.use(express.static('static'));
 
 // load controllers
@@ -34,7 +43,7 @@ fs.readdirSync(__dirname + '/controllers').forEach(function(filename) {
     var controller = require('./controllers/' + name)(services);
     for (var method in controller) {
         console.log('  method ' + method);
-        if (['GET', 'POST', 'PUT', 'DELETE'].indexOf(method) == 0) {
+        if (['GET', 'POST', 'PUT', 'DELETE'].indexOf(method) != -1) {
             app[method.toLowerCase()]('/' + name + '*', controller[method]);
         } else {
             app.get('/' + name + '/' + method, controller[method]);
